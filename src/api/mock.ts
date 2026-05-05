@@ -1,6 +1,6 @@
 import type { DiagnoseResponse, DiseaseClass, Treatment } from './types';
 
-const TREATMENTS: Record<DiseaseClass, Treatment> = {
+export const TREATMENTS: Record<DiseaseClass, Treatment> = {
   citrus_canker: {
     class: 'citrus_canker',
     summary_th:
