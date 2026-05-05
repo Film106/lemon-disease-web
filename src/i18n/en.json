@@ -1,0 +1,102 @@
+{
+  "nav": {
+    "home": "Home",
+    "capture": "Diagnose",
+    "history": "History",
+    "result": "Result"
+  },
+  "home": {
+    "title": "Lemon Leaf Diagnosis",
+    "subtitle": "AI-powered disease detection for your citrus farm",
+    "tagline": "Take a photo of a leaf — get instant diagnosis and treatment advice",
+    "diagnose_button": "Diagnose a Leaf",
+    "history_button": "View History",
+    "how_it_works": "How it works",
+    "step1_title": "Capture",
+    "step1_desc": "Take a clear photo of the affected leaf",
+    "step2_title": "Analyse",
+    "step2_desc": "AI model identifies the disease",
+    "step3_title": "Treat",
+    "step3_desc": "Get personalised treatment advice"
+  },
+  "capture": {
+    "title": "Capture Leaf",
+    "guide_text": "Position the leaf inside the frame",
+    "tip": "Tip: Use good lighting and fill the frame with a single leaf",
+    "capture_button": "Capture",
+    "upload_button": "Upload from Gallery",
+    "cancel_button": "Cancel",
+    "offline_message": "You need an internet connection to diagnose a new leaf.",
+    "camera_error": "Camera not available",
+    "camera_error_desc": "Please allow camera access or upload an image from your gallery."
+  },
+  "result": {
+    "title": "Diagnosis Result",
+    "loading": "Analysing your leaf…",
+    "warming_up": "Warming up the model…",
+    "save_button": "Save to History",
+    "retake_button": "Try Again",
+    "back_home": "Back to Home",
+    "confident_title": "Disease Detected",
+    "uncertain_title": "Uncertain Result",
+    "uncertain_desc": "The model is not confident enough to make a diagnosis. Please retake the photo with better lighting and a single clear leaf.",
+    "invalid_title": "Not a Leaf Image",
+    "invalid_desc": "The uploaded image does not appear to be a lemon leaf. Please capture a clear photo of an affected leaf.",
+    "confidence": "Confidence",
+    "distribution_title": "Probability Distribution",
+    "treatment_title": "Treatment Advice",
+    "diagnose_another_button": "Diagnose Another",
+    "share_button": "Share",
+    "saved_toast": "Saved to history",
+    "save_error_toast": "Failed to save"
+  },
+  "history": {
+    "title": "History",
+    "empty_title": "No history yet",
+    "empty_desc": "Diagnosed leaves will appear here",
+    "clear_all": "Clear All",
+    "confirm_clear_title": "Clear History",
+    "confirm_clear_message": "This will permanently delete all diagnosis records. Are you sure?",
+    "confirm_delete_title": "Delete Record",
+    "confirm_delete_message": "Delete this diagnosis record?",
+    "cleared_toast": "History cleared",
+    "deleted_toast": "Record deleted"
+  },
+  "disease": {
+    "citrus_canker": "Citrus Canker",
+    "leaf_miner": "Leaf Miner",
+    "nutrient_deficiency": "Nutrient Deficiency",
+    "healthy": "Healthy"
+  },
+  "treatment": {
+    "immediate_steps": "Immediate Steps",
+    "treatment_agents": "Treatment Agents",
+    "agent": "Agent",
+    "rate": "Rate",
+    "interval": "Interval",
+    "notes": "Notes",
+    "when_to_escalate": "When to Escalate",
+    "safety": "Safety Notes"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Network error. Please check your connection.",
+    "rate_limit": "Too many requests. Please wait a moment.",
+    "server": "Server error. Please try again later.",
+    "boundary_title": "Something went wrong",
+    "boundary_desc": "An unexpected error occurred. Please reload the app.",
+    "reload": "Reload"
+  },
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "loading": "Loading…",
+    "retry": "Retry"
+  },
+  "lang": {
+    "toggle": "TH | EN",
+    "th": "ภาษาไทย",
+    "en": "English"
+  }
+}

@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #2D5A27;
+  --color-secondary: #6B4226;
+  --color-warning: #D97706;
+  --color-danger: #C0392B;
+  --color-bg: #FAFAF7;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-bg);
+    font-family: 'IBM Plex Sans Thai Looped', 'Sarabun', system-ui, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer utilities {
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
