@@ -9,17 +9,11 @@ import { LanguageToggle } from '../components/LanguageToggle';
 
 function LeafIcon() {
   return (
-    <svg viewBox="0 0 80 80" className="w-20 h-20" fill="none">
+    <svg viewBox="0 0 80 80" className="w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36" fill="none">
       <circle cx="40" cy="40" r="40" fill="#2D5A27" />
       <path
         d="M40 12 C58 22, 65 38, 62 56 C59 68, 48 73, 40 73 C32 73, 21 68, 18 56 C15 38, 22 22, 40 12Z"
         fill="#3D7A35"
-      />
-      <path
-        d="M40 12 C40 12, 65 38, 62 56"
-        stroke="#2D5A27"
-        strokeWidth="2"
-        fill="none"
       />
       <line x1="40" y1="20" x2="40" y2="68" stroke="#2D5A27" strokeWidth="2" />
       <line x1="40" y1="35" x2="54" y2="44" stroke="#2D5A27" strokeWidth="1.5" />
@@ -30,30 +24,25 @@ function LeafIcon() {
   );
 }
 
-function StepCard({
-  icon,
-  title,
-  desc,
-  step,
-}: {
+function StepCard({ icon, title, desc, step }: {
   icon: React.ReactNode;
   title: string;
   desc: string;
   step: number;
 }) {
   return (
-    <div className="flex flex-col items-center text-center gap-3 p-4">
+    <div className="flex flex-col items-center text-center gap-3 p-4 sm:p-6">
       <div className="relative">
-        <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+        <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-primary/10 flex items-center justify-center">
           {icon}
         </div>
-        <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">
+        <span className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">
           {step}
         </span>
       </div>
       <div>
-        <p className="font-semibold text-gray-900 text-sm">{title}</p>
-        <p className="text-xs text-gray-500 mt-1">{desc}</p>
+        <p className="font-semibold text-gray-900 text-sm sm:text-base">{title}</p>
+        <p className="text-xs sm:text-sm text-gray-500 mt-1">{desc}</p>
       </div>
     </div>
   );
@@ -74,7 +63,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-bg flex flex-col">
       {/* Header */}
-      <header className="flex items-center justify-end px-4 pt-safe pt-4 pb-2">
+      <header className="flex items-center justify-end px-4 pt-4 pb-2">
         <LanguageToggle />
       </header>
 
@@ -84,22 +73,18 @@ export default function Home() {
         <div className="flex flex-col items-center gap-4 text-center">
           <LeafIcon />
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
               {t('home.title')}
             </h1>
-            <p className="text-gray-500 mt-2 text-sm leading-relaxed max-w-xs">
+            <p className="text-gray-500 mt-2 text-sm sm:text-base md:text-lg leading-relaxed max-w-xs sm:max-w-sm">
               {t('home.tagline')}
             </p>
           </div>
         </div>
 
         {/* CTAs */}
-        <div className="w-full max-w-xs space-y-3">
-          <PrimaryButton
-            size="lg"
-            fullWidth
-            onClick={() => navigate('/capture')}
-          >
+        <div className="w-full max-w-xs sm:max-w-sm md:max-w-md space-y-3">
+          <PrimaryButton size="lg" fullWidth onClick={() => navigate('/capture')}>
             <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
               <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
@@ -107,12 +92,7 @@ export default function Home() {
             {t('home.diagnose_button')}
           </PrimaryButton>
 
-          <SecondaryButton
-            size="lg"
-            fullWidth
-            disabled={!hasHistory}
-            onClick={() => navigate('/history')}
-          >
+          <SecondaryButton size="lg" fullWidth disabled={!hasHistory} onClick={() => navigate('/history')}>
             <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -121,7 +101,7 @@ export default function Home() {
         </div>
 
         {/* How it works */}
-        <div className="w-full max-w-sm">
+        <div className="w-full max-w-sm sm:max-w-lg md:max-w-2xl">
           <p className="text-center text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
             {t('home.how_it_works')}
           </p>

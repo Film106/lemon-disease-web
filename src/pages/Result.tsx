@@ -10,6 +10,7 @@ import { LoadingState } from '../components/ui/LoadingState';
 import { PrimaryButton } from '../components/ui/PrimaryButton';
 import { SecondaryButton } from '../components/ui/SecondaryButton';
 import { IconButton } from '../components/ui/IconButton';
+import { Container } from '../components/ui/Container';
 import { ToastContainer } from '../components/ui/Toast';
 import type { ToastVariant } from '../components/ui/Toast';
 import type { DiagnoseResponse } from '../api/types';
@@ -30,12 +31,7 @@ function fileToDataUrl(file: File): Promise<string> {
 }
 
 function ResultFooter({
-  result,
-  saved,
-  onSave,
-  onRetake,
-  onDiagnoseAnother,
-  onHome,
+  result, saved, onSave, onRetake, onDiagnoseAnother, onHome,
 }: {
   result: DiagnoseResponse;
   saved: boolean;
@@ -55,55 +51,48 @@ function ResultFooter({
           ? `Diagnosis: ${result.predicted_class} (${Math.round((result.confidence ?? 0) * 100)}%)`
           : 'Lemon leaf diagnosis result',
       });
-    } catch {
-      // user cancelled or not supported
-    }
+    } catch { /* cancelled */ }
   };
 
-  if (result.decision === 'invalid_input') {
+  const inner = (() => {
+    if (result.decision === 'invalid_input') {
+      return (
+        <div className="flex gap-3">
+          <SecondaryButton fullWidth onClick={onRetake}>{t('result.retake_button')}</SecondaryButton>
+          <SecondaryButton fullWidth onClick={onHome}>{t('result.back_home')}</SecondaryButton>
+        </div>
+      );
+    }
+    if (result.decision === 'uncertain') {
+      return (
+        <div className="flex gap-3">
+          <SecondaryButton fullWidth onClick={onRetake}>{t('result.retake_button')}</SecondaryButton>
+          <PrimaryButton fullWidth onClick={onDiagnoseAnother}>{t('result.diagnose_another_button')}</PrimaryButton>
+        </div>
+      );
+    }
     return (
-      <div className="fixed bottom-0 left-0 right-0 bg-bg/95 backdrop-blur border-t border-gray-100 px-4 pt-3 pb-safe pb-6 flex gap-3">
-        <SecondaryButton fullWidth onClick={onRetake}>
-          {t('result.retake_button')}
-        </SecondaryButton>
-        <SecondaryButton fullWidth onClick={onHome}>
-          {t('result.back_home')}
-        </SecondaryButton>
+      <div className="space-y-2">
+        <div className="flex gap-3">
+          <PrimaryButton fullWidth onClick={onSave} disabled={saved}>
+            {saved ? `✓ ${t('result.save_button')}` : t('result.save_button')}
+          </PrimaryButton>
+          {canShare && (
+            <IconButton label={t('result.share_button')} variant="outline" onClick={handleShare}>
+              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
+              </svg>
+            </IconButton>
+          )}
+        </div>
+        <SecondaryButton fullWidth onClick={onDiagnoseAnother}>{t('result.diagnose_another_button')}</SecondaryButton>
       </div>
     );
-  }
+  })();
 
-  if (result.decision === 'uncertain') {
-    return (
-      <div className="fixed bottom-0 left-0 right-0 bg-bg/95 backdrop-blur border-t border-gray-100 px-4 pt-3 pb-safe pb-6 flex gap-3">
-        <SecondaryButton fullWidth onClick={onRetake}>
-          {t('result.retake_button')}
-        </SecondaryButton>
-        <PrimaryButton fullWidth onClick={onDiagnoseAnother}>
-          {t('result.diagnose_another_button')}
-        </PrimaryButton>
-      </div>
-    );
-  }
-
-  // Confident
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-bg/95 backdrop-blur border-t border-gray-100 px-4 pt-3 pb-safe pb-6 space-y-2">
-      <div className="flex gap-3">
-        <PrimaryButton fullWidth onClick={onSave} disabled={saved}>
-          {saved ? `✓ ${t('result.save_button')}` : t('result.save_button')}
-        </PrimaryButton>
-        {canShare && (
-          <IconButton label={t('result.share_button')} variant="outline" onClick={handleShare}>
-            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
-            </svg>
-          </IconButton>
-        )}
-      </div>
-      <SecondaryButton fullWidth onClick={onDiagnoseAnother}>
-        {t('result.diagnose_another_button')}
-      </SecondaryButton>
+    <div className="fixed bottom-0 left-0 right-0 bg-bg/95 backdrop-blur border-t border-gray-100 pt-3 pb-6">
+      <Container>{inner}</Container>
     </div>
   );
 }
@@ -134,9 +123,7 @@ export default function Result() {
       try {
         const url = await fileToDataUrl(currentImage);
         setThumbnailUrl(url);
-      } catch {
-        // ignore
-      }
+      } catch { /* ignore */ }
       return result;
     },
     enabled: !!currentImage && !currentResult,
@@ -145,6 +132,9 @@ export default function Result() {
   });
 
   const result = currentResult;
+  const handleRetake = () => navigate('/capture');
+  const handleDiagnoseAnother = () => navigate('/capture');
+  const handleHome = () => navigate('/');
 
   const handleSave = async () => {
     if (!result || saved) return;
@@ -162,60 +152,51 @@ export default function Result() {
     }
   };
 
-  const handleRetake = () => navigate('/capture');
-  const handleDiagnoseAnother = () => navigate('/capture');
-  const handleHome = () => navigate('/');
-
   if (!currentImage && !currentResult) {
     return (
       <div className="min-h-screen bg-bg flex flex-col items-center justify-center gap-6 p-6">
         <p className="text-gray-500 text-center">{t('errors.generic')}</p>
-        <PrimaryButton onClick={() => navigate('/capture')}>
-          {t('capture.title')}
-        </PrimaryButton>
+        <PrimaryButton onClick={() => navigate('/capture')}>{t('capture.title')}</PrimaryButton>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-bg flex flex-col">
-      <header className="flex items-center gap-3 px-4 pt-safe pt-4 pb-2">
-        <IconButton label={t('result.back_home')} variant="ghost" onClick={handleHome}>
-          <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-          </svg>
-        </IconButton>
-        <h1 className="font-bold text-gray-900 text-lg flex-1">{t('result.title')}</h1>
+      {/* Header */}
+      <header className="pt-4 pb-2 border-b border-gray-100 flex-shrink-0">
+        <Container className="flex items-center gap-3">
+          <IconButton label={t('result.back_home')} variant="ghost" onClick={handleHome}>
+            <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+          </IconButton>
+          <h1 className="font-bold text-gray-900 text-lg flex-1">{t('result.title')}</h1>
+        </Container>
       </header>
 
-      <main className="flex-1 px-4 pb-40 pt-2 overflow-y-auto">
-        {isPending && (
-          <LoadingState variant="default" message={t('result.loading')} />
-        )}
+      {/* Main */}
+      <main className="flex-1 py-6 pb-44 overflow-y-auto">
+        <Container>
+          {isPending && <LoadingState variant="default" message={t('result.loading')} />}
 
-        {error && !result && (
-          <div className="rounded-2xl bg-red-50 border border-red-200 p-6 text-center space-y-3 mt-4">
-            <p className="text-danger font-semibold">{t('errors.generic')}</p>
-            <p className="text-sm text-red-600">{(error as Error).message}</p>
-            <SecondaryButton onClick={handleRetake}>
-              {t('common.retry')}
-            </SecondaryButton>
-          </div>
-        )}
+          {error && !result && (
+            <div className="rounded-2xl bg-red-50 border border-red-200 p-6 text-center space-y-3">
+              <p className="text-danger font-semibold">{t('errors.generic')}</p>
+              <p className="text-sm text-red-600">{(error as Error).message}</p>
+              <SecondaryButton onClick={handleRetake}>{t('common.retry')}</SecondaryButton>
+            </div>
+          )}
 
-        {result && (
-          <ResultCard result={result} thumbnailUrl={thumbnailUrl} />
-        )}
+          {result && <ResultCard result={result} thumbnailUrl={thumbnailUrl} />}
+        </Container>
       </main>
 
       {result && (
         <ResultFooter
-          result={result}
-          saved={saved}
-          onSave={handleSave}
-          onRetake={handleRetake}
-          onDiagnoseAnother={handleDiagnoseAnother}
-          onHome={handleHome}
+          result={result} saved={saved}
+          onSave={handleSave} onRetake={handleRetake}
+          onDiagnoseAnother={handleDiagnoseAnother} onHome={handleHome}
         />
       )}
 
